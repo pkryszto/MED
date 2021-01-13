@@ -10,9 +10,9 @@ namespace MED
     {
         static void Main(string[] args)
         {
-            string pulpit = "C:\\Users\\user\\Desktop\\";
+            string pulpit = "D:\\Studia\\MED\\Projekt\\Git\\MED\\data\\"; // Paweu: C:\\Users\\user\\Desktop\\
             char separator = ';';
-            SprintClassification(pulpit, "Decision_Tree_klasy",pulpit,"klasySprint", ';'); //separartor?
+            SprintClassification(pulpit, "Decision_Tree_klasy",pulpit,"klasySprint", separator); //separator?
             Console.ReadKey();
         }
 
