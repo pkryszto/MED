@@ -61,7 +61,8 @@ namespace MED
         public double getDistance(AnalyzedData tuple, List<MinMaxKNN> minMax)
         {
             double result = 0;
-            for (int i = 0; i < Attributes.Count; i++)
+            int limit = Math.Min(Attributes.Count, Math.Min(tuple.attributes.Count, minMax.Count));
+            for (int i = 0; i < limit; i++)
             {
                 result += Math.Pow(Attributes[i].getDistance(tuple.Attributes[i], minMax[i].MinValue, minMax[i].MaxValue),2);
             }

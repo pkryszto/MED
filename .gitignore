@@ -6,6 +6,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+.MED/data/NEW_KDD99Train.txt
+.MED/data/NEW_KDD99Test.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
