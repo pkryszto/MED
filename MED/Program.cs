@@ -12,7 +12,7 @@ namespace MED
         {
             string pulpit = "C:\\Users\\user\\Desktop\\";
             char separator = ';';
-            SprintClassification(pulpit, "Decision_Tree_klasy",pulpit,"klasySprint", ';');
+            SprintClassification(pulpit, "Decision_Tree_klasy",pulpit,"klasySprint", ';'); //separartor?
             Console.ReadKey();
         }
 
