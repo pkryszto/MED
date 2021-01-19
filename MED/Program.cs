@@ -13,7 +13,7 @@ namespace MED
         public static string elapsedTime;
         public static void printElapsedTimeResetWatch(TimeSpan ts, string activity) {
             Globals.elapsedTime = String.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds);
-            Console.WriteLine(activity + " - finished in time: " + Globals.elapsedTime + " (hours:minutes:seconds)");
+            Console.WriteLine(activity + " - finished in: " + Globals.elapsedTime + " (hours:minutes:seconds)");
             Globals.stopWatch.Reset();
         }
     }
@@ -26,7 +26,7 @@ namespace MED
             char separator = ';';
             // SprintClassification(pulpit, "Decision_Tree_klasy",pulpit,"klasySprint", separator);
             // KNNClassification(pulpit, "NEW_KDD99Train_100k", pulpit, "NEW_KDD99Test_10k", separator);
-            BayesClassification(pulpit, "NEW_KDDTrain+_5k", pulpit, "NEW_KDDTest+_500", separator);
+            BayesClassification(pulpit, "NEW_KDDTrain+", pulpit, "NEW_KDDTest+", separator);
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
