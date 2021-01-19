@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlgorithmRunner.cs" />
     <Compile Include="AnalyzedData.cs" />
     <Compile Include="AttributeCounter.cs" />
     <Compile Include="AttributeCounterField.cs" />
