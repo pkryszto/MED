@@ -34,7 +34,6 @@ namespace MED
             Tuple<DataSet, DataSet> newTables = data.splitTable(split.Item1, split.Item2);
             Sprint left = new Sprint(newTables.Item1);
             Sprint right = new Sprint(newTables.Item2);
-
             node.addChild('l', left.createTree());
             node.addChild('r', right.createTree());
 

@@ -75,6 +75,7 @@ namespace MED
 
         public Tuple<string, double> findBestSplit()
         {
+            if (checkIfPlain()) return new Tuple<string, double>("0",9999999);
             if (isNumerical) return findBestSplitNumerical();
             else return findBestSplitString();
         }
@@ -149,6 +150,15 @@ namespace MED
         {
             Console.WriteLine("Is numerical: " + isNumerical);
             foreach (var v in attributes) Console.WriteLine(v.getValueAsString() + " " + v.AttributeClass);
+        }
+
+        private bool checkIfPlain()
+        {
+            for(int i = 0; i < attributes.Count -1; i++)
+            {
+                if (!attributes[i].getValueAsString().Equals(attributes[i + 1].getValueAsString())) return false;
+            }
+            return true;
         }
 
     }

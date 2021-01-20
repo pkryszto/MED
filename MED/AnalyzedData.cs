@@ -37,7 +37,7 @@ namespace MED
             for(int i = 0; i < readLine.Length - lab; i++)
             {
                 double a;
-                if(Double.TryParse(readLine[i].Trim(), out a))
+                if(Double.TryParse(readLine[i].Trim().Replace('.', ','), out a))
                 {
                     NumericalDataAttribute toAdd = new NumericalDataAttribute(headers[i], a, DataClass);
                     setAttributes.Add(toAdd);

@@ -140,7 +140,43 @@ namespace MED
         {
             List<AttributeTable> attributes = createTables();
             List<Tuple<string, double>> ginies = new List<Tuple<string, double>>();
-            foreach (var v in attributes) ginies.Add(v.findBestSplit());
+
+            List<List<Tuple<string, double>>> subGinies = new List<List<Tuple<string, double>>>();
+            for (int i = 0; i < AlgorithmRunner.MAX_THREADS; i++) subGinies.Add(new List<Tuple<string, double>>());
+
+            int from = 0;
+            int attributesInThread = attributes.Count / AlgorithmRunner.MAX_THREADS;
+
+            List<System.Threading.Thread> tasks = new List<System.Threading.Thread>();
+            for (int i = 0; i < AlgorithmRunner.MAX_THREADS - 1; i++)
+            {
+                System.Threading.Monitor.Enter(AlgorithmRunner.semaphore);
+                Object fr = new object();
+                Object iMon = new object();
+                iMon = i;
+                fr = from;
+                System.Threading.Thread thread = new System.Threading.Thread(delegate () {
+                    findBestSplitThread(subGinies[(int)iMon], attributes, (int)fr, (int)fr + attributesInThread);
+                });
+                tasks.Add(thread);
+                thread.Start();
+                from += attributesInThread;
+                System.Threading.Monitor.Exit(AlgorithmRunner.semaphore);
+            }
+            System.Threading.Thread lastThread = new System.Threading.Thread(delegate () {
+                findBestSplitThread(subGinies.Last(), attributes, from, attributes.Count);
+            });
+            tasks.Add(lastThread);
+            lastThread.Start();
+
+            foreach (var temp in tasks)
+            {
+                temp.Join();
+            }
+
+
+            foreach (var v in subGinies) ginies.AddRange(v);
+            //foreach (var v in attributes) ginies.Add(v.findBestSplit());
 
             int best = 0;
 
@@ -174,12 +210,39 @@ namespace MED
             using (StreamWriter outputFile = new StreamWriter(Path.Combine(path, name + ".txt")))
             {
                 foreach (var v in headers) outputFile.Write(v + " ");
-                outputFile.WriteLine();
+                outputFile.WriteLine("label");
                 foreach (var v in dataValues)
                 {
-                    foreach (var w in v.Attributes) outputFile.Write(w.getValueAsString() + separator);
+                    foreach (var w in v.Attributes) outputFile.Write(w.getValueAsString().Replace(',', '.') + separator);
                     outputFile.WriteLine(v.DataClass);
                 }
+            }
+        }
+
+        public void clasifyBayesThread(NaiveBayes bayes, int from, int to)
+        {
+            if (to > dataValues.Count) to = dataValues.Count;
+            for(int i = from; i < to; i++) bayes.findMostLikelyClass(dataValues[i]);
+        }
+
+        public void clasifyKnnThread(KNN knn, int from, int to)
+        {
+            if (to > dataValues.Count) to = dataValues.Count;
+            for (int i = from; i < to; i++) knn.setClass(dataValues[i]);
+        }
+
+        public void clasifyTreeThread(DecisionTree tree, int from, int to)
+        {
+            if (to > dataValues.Count) to = dataValues.Count;
+            for (int i = from; i < to; i++) tree.classifyTuple(dataValues[i]);
+        }
+
+        public void findBestSplitThread(List<Tuple<string, double>> ginies,List<AttributeTable> attributes, int from, int to)
+        {
+            if (to > attributes.Count) to = attributes.Count;
+            for (int i = from; i < to; i++)
+            {
+                ginies.Add(attributes[i].findBestSplit());
             }
         }
 
